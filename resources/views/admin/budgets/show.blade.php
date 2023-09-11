@@ -1,0 +1,13 @@
+<x-admin-layout>
+    <ul>
+        <li>
+            {{$wallet->name}}
+        </li>
+        <li>
+            {{$wallet->description}}
+        </li>
+        <li>
+            {{$wallet->value}}
+        </li>
+    </ul>
+</x-admin-layout>
