@@ -65,21 +65,41 @@ class apiTransactionsController extends Controller
         return $item;
     }
 
-public function enList(Request $request)
+    public function enList(Request $request)
     {
 
         $desde = $request->desde;
         $hasta = $request->hasta;
 
         if ($desde == null || $desde == '' || $desde == 'undefined' || $hasta == null || $hasta == '' || $hasta == 'undefined') {
-            $data = Transaction::orderBy('transaction_date', 'desc')->get();
-        } else {
-            $data = DB::table('transactions')->where('status', '=', 1 )->whereBetween('transaction_date', [$desde, $hasta])
+            $data = DB::table('transactions')
+                ->where('status', '!=', 2)
                 ->orderBy('transaction_date', 'desc')
                 ->get();
-
+        } else {
+            $data = DB::table('transactions')
+                ->whereBetween('transaction_date', [$desde, $hasta])
+                ->where('status', '!=', 2)
+                ->orderBy('transaction_date', 'desc')
+                ->get();
         }
 
         return $data;
     }
+
+    public function delete(Request $request)
+    {
+        $id = $request->id;
+
+        $transaction = Transaction::findOrFail($id);
+        $transaction->status = 2;
+        $transaction->update();
+
+        return response()->json([
+            'message' => 'Transaction deleted successfully!',
+            'status' => 'success',
+            'transaction' => $transaction,
+        ], 200);
+    }
+
 }

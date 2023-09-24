@@ -1,6 +1,6 @@
 <x-admin-layout>
     <div class="flex mb-4 justify-start">
-        <x-a-button href="{{route('admin.wallets.create')}}">
+        <x-a-button class="bg-weirdo-red-900" href="{{route('admin.wallets.create')}}">
             Crear Bolsillo
         </x-a-button>
     </div>

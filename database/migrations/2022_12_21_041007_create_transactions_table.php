@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('grand');
             $table->integer('status');
             $table->string('type');
-            $table->string('transaction_date');
+            $table->date('transaction_date');
             $table->integer('payment_installments')->nullable();
             $table->integer('payment_number')->nullable();
             $table->integer('autorization_number')->nullable();

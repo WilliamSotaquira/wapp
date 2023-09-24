@@ -88,7 +88,7 @@
 
             @include('layouts.partials.admin.navegation')
 
-            <div class="max-w-4xl m-auto my-4 bg-dashboard">
+            <div class="max-w-5xl m-auto my-4 bg-dashboard">
 
                 {{ $slot }}
 

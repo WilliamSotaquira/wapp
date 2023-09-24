@@ -24,4 +24,6 @@ Route::get('items/select', [apiTransactionsController::class, 'select'])->name('
 Route::post('items/create', [apiTransactionsController::class, 'create'])->name('api.items.create');
 Route::get('items/get', [apiTransactionsController::class, 'get'])->name('api.items.get');
 Route::get('items/enList', [apiTransactionsController::class, 'enList'])->name('api.items.enList');
+Route::post('items/delete', [apiTransactionsController::class, 'delete'])->name('api.items.delete');
+Route::post('items/edit', [apiTransactionsController::class, 'edit'])->name('api.items.edit');
 

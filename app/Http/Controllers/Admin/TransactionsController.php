@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\BudgetUpdate;
 use App\Http\Controllers\Controller;
 use App\Models\Budget;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\Operation;
 use App\Models\Transaction;
+use Egulias\EmailValidator\Parser\Comment;
 use Exception;
+use Illuminate\Console\View\Components\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -51,70 +54,94 @@ class TransactionsController extends Controller
     public function store(Request $request)
     {
 
-        $userId = Auth::id();
+
         $cuotas = $request->get('payment_installments');
+        $idbudget = (int)$request->get('budgets_id');
+        $total = (int)$request->get('grand');
         $cont = 1;
 
-        if ($cuotas == null || $cuotas == 0) {
-            $cuotas = 1;
-        }
+        $budget = Budget::where('id', $idbudget)->first();
+        $value = $budget->value;
+        $userId = Auth::id();
 
-        while ($cont <= $cuotas) {
+        if ($value > $total) {
 
-            try {
-
-                DB::beginTransaction();
-
-                $transaction = new Transaction();
-                $transaction->details = $request->get('details');
-                $transaction->payment = $request->get('payment');
-                $transaction->grand = $request->get('grand');
-                $transaction->status = $request->get('status');
-                $transaction->type = $request->get('type');
-                $transaction->transaction_date = $request->get('transaction_date');
-                $transaction->payment_installments = $cont;
-                $transaction->payment_number = $request->get('payment_number');
-                $transaction->autorization_number = $request->get('autorization_number');
-                $transaction->agreed_rate = $request->get('agreed_rate');
-                $transaction->billed_EA = $request->get('billed_EA');
-                $transaction->category_id  = $request->get('categories_id');
-                $transaction->budget_id  = $request->get('budgets_id');
-                $transaction->users_id = $userId;
-                $transaction->save();
-
-                $qty = $request->get('qty');
-                $subtotal = $request->get('subtotal');
-                $tax_subtotal = $request->get('tax_subtotal');
-                $item_id = $request->get('items_id');
-
-                // return $qty;
-
-                $i = 0;
-                while ($i < count($item_id)) {
-                    $operation  = new Operation();
-                    $operation->transaction_id  = $transaction->id;
-                    $operation->qty = $qty[$i];
-                    $operation->subtotal = $subtotal[$i];
-                    $operation->tax_subtotal = $tax_subtotal[$i];
-                    $operation->item_id = $item_id[$i];
-                    $operation->save();
-                    $i++;
-                }
-
-                DB::commit();
-            } catch (Exception $e) {
-
-                DB::rollback();
-
-                return $e;
+            if ($cuotas == null || $cuotas == 0) {
+                $cuotas = 1;
             }
 
-            $cont++;
+
+            while ($cont <= $cuotas) {
+
+                try {
+
+                    DB::beginTransaction();
+
+                    $transaction = new Transaction();
+                    $transaction->details = $request->get('details');
+                    $transaction->payment = $request->get('payment');
+                    $transaction->grand = $total;
+                    $transaction->status = $request->get('status');
+                    $transaction->type = $request->get('type');
+                    $transaction->transaction_date = $request->get('transaction_date');
+                    $transaction->payment_installments = $cont;
+                    $transaction->payment_number = $request->get('payment_number');
+                    $transaction->autorization_number = $request->get('autorization_number');
+                    $transaction->agreed_rate = $request->get('agreed_rate');
+                    $transaction->billed_EA = $request->get('billed_EA');
+                    $transaction->category_id  = (int)$request->get('categories_id');
+                    $transaction->budget_id  = $idbudget;
+                    $transaction->users_id = (int)$userId;
+                    $transaction->save();
+
+                    $qty = $request->get('qty');
+                    $subtotal = $request->get('subtotal');
+                    $tax_subtotal = $request->get('tax_subtotal');
+                    $item_id = $request->get('items_id');
+
+                    // return $transaction;
+
+                    $i = 0;
+                    while ($i < count($item_id)) {
+                        $operation  = new Operation();
+                        $operation->transaction_id  = $transaction->id;
+                        $operation->qty = $qty[$i];
+                        $operation->subtotal = $subtotal[$i];
+                        $operation->tax_subtotal = $tax_subtotal[$i];
+                        $operation->item_id = $item_id[$i];
+                        $operation->save();
+                        $i++;
+
+                        // return $operation;
+                    }
+
+                    DB::commit();
+
+
+                    $value = $value - $total;
+                    $budget->value = $value;
+                    $budget->update();
+                    // BudgetUpdate::dispatch($transaction);
+
+                } catch (Exception $e) {
+
+                    DB::rollback();
+
+                    return $e;
+                }
+
+                $cont++;
+            }
+
+            session()->flash('flash.banner', 'Transaction created successfully!');
+            session()->flash('flash.bannerStyle', 'success');
+            return redirect()->route('admin.transactions.index');
         }
 
-        session()->flash('flash.banner', 'Transaction created successfully!');
-        session()->flash('flash.bannerStyle', 'success');
-        return redirect()->route('admin.transactions.index');
+
+        session()->flash('flash.banner', 'Error, the transaction exceeds the amount!Enter the values again');
+        session()->flash('flash.bannerStyle', 'error');
+        return redirect()->route('admin.transactions.create');
     }
 
     /**

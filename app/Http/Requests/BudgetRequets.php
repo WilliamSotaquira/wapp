@@ -25,7 +25,7 @@ class BudgetRequets extends FormRequest
     {
         return [
             'name' => 'required|max:45',
-            'purpose' => 'required|max:255',
+            'purpose' => 'max:255',
             'quantity' => 'max:11',
             'repetition' => 'max:255',
 

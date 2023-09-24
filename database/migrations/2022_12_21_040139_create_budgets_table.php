@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('budgets', function (Blueprint $table) {
             $table->id();
             $table->string('name', 45)->index();
-            $table->longText('purpose');
+            $table->longText('purpose')->nullable();
             $table->integer('value');
 
             $table->foreignId('wallet_id')

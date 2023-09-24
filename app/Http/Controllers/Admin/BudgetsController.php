@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\BudgetRequets;
 use App\Models\Budget;
+use App\Http\Requests\BudgetRequets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,11 +50,8 @@ class BudgetsController extends Controller
         $budget = new Budget();
         $budget->name = $request->name;
         $budget->purpose = $request->purpose;
-        $budget->quantity = $request->quantity;
-        $budget->repetition = $request->repetition;
+        $budget->value = $request->value;
         $budget->wallet_id = $request->wallet_id;
-        $budget->start_date = $request->start_date;
-        $budget->due_date = $request->due_date;
         $budget->save();
 
         session()->flash('flash.banner', 'Budget created successfully!');
@@ -97,13 +94,13 @@ class BudgetsController extends Controller
      */
     public function update(Request $request, Budget $budget)
     {
-        $budget->update($request->all());
+        // $budget->update($request->all());
 
-        session()->flash('flash.banner', 'Budget updated successfully!');
-        session()->flash('flash.bannerStyle', 'success');
+        // session()->flash('flash.banner', 'Budget updated successfully!');
+        // session()->flash('flash.bannerStyle', 'success');
 
 
-        return redirect()->route('admin.budgets.index');
+        // return redirect()->route('admin.budgets.index');
     }
 
     /**

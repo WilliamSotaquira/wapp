@@ -1,6 +1,6 @@
 <x-admin-layout>
     <div class="flex mb-4 justify-start">
-        <x-a-button href="{{route('admin.budgets.create')}}">
+        <x-a-button class=" bg-weirdo-red-900" href="{{route('admin.budgets.create')}}">
             Crear Presupuesto
         </x-a-button>
     </div>
@@ -8,10 +8,9 @@
 
     <div class="overflow-x-auto shadow-md sm:rounded-lg">
     <table class="w-full text-left text-gray-500 dark:text-gray-400">
-            <caption class="p-5 bg-white dark:bg-gray-800 text-left">
+            <caption class="p-5 bg-white dark:bg-gray-500 text-left">
                 <h5 class="mb-4 text-xl font-bold leading-none text-gray-900 md:text-2xl dark:text-white">Presupuestos</h5>
                 <p class="mt-1 font-normal text-gray-500 dark:text-gray-400">Cálculo, planificación y formulación anticipada de los ingresos y gastos.</p>
-
             </caption>
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>

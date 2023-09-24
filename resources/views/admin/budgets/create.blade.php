@@ -8,25 +8,13 @@
 
             <div class="mb-4">
                 <x-jet-label for="name">Nombre*</x-jet-label>
-                <x-jet-input type="text" name="name" id="name" value="{{old('name')}}" placeholder="Ingrese un nombre para su billetera" autofocus autocomplete="name"></x-jet-input>
+                <x-jet-input type="text" name="name" id="name" value="{{old('name')}}" placeholder="Ingrese un nombre para su presupuesto" autofocus autocomplete="name"></x-jet-input>
                 <x-input-error for="name" />
             </div>
-            <div class="mb-4 md:col-span-2">
-                <x-jet-label for="purpose">Propósito</x-jet-label>
-                <x-text-area name="purpose" id="purpose" placeholder="Agregue su descripción aquí" autofocus autocomplete="purpose" required="required">{{old('purpose')}}</x-text-area>
-                <x-input-error for="purpose" />
-
-            </div>
             <div class="mb-4">
-                <x-jet-label for="repetition">Repetición*</x-jet-label>
-                <x-jet-input type="number" name="repetition" id="repetition" value="{{old('repetition')}}" placeholder="Ingrese el valor en días" autofocus autocomplete="repetition" required></x-jet-input>
-                <x-input-error for="repetition" />
-
-            </div>
-            <div class="mb-4">
-                <x-jet-label for="quantity">Cantidad*</x-jet-label>
-                <x-jet-input type="number" name="quantity" id="quantity" value="{{old('quantity')}}" placeholder="Ingrese el valor inicial de su billetera" autofocus autocomplete="quantity" required></x-jet-input>
-                <x-input-error for="quantity" />
+                <x-jet-label for="value">Valor para reserva*</x-jet-label>
+                <x-jet-input type="number" name="value" id="value" value="{{old('value')}}" placeholder="Ingrese el valor de su presupuesto para ser reservado" autofocus autocomplete="value" required></x-jet-input>
+                <x-input-error for="value" />
             </div>
 
             <div class="md-4 ">
@@ -38,16 +26,13 @@
                     @endforeach
                 </select>
             </div>
-            <div class="mb-4">
-                <x-jet-label for="start_date">Fecha de inicio*</x-jet-label>
-                <x-jet-input type="date" name="start_date" id="start_date" value="{{old('start_date')}}" placeholder="Ingrese la fecha de inicio" autofocus autocomplete="start_date" required></x-jet-input>
-                <x-input-error for="start_date" />
+            <div class="mb-4 md:col-span-3">
+                <x-jet-label for="purpose">Propósito</x-jet-label>
+                <x-text-area name="purpose" id="purpose" placeholder="Agregue su descripción aquí" autofocus autocomplete="purpose">{{old('purpose')}}</x-text-area>
+                <x-input-error for="purpose" />
+
             </div>
-            <div class="mb-4">
-                <x-jet-label for="due_date">Fecha de vencimiento*</x-jet-label>
-                <x-jet-input type="date" name="due_date" id="due_date" value="{{old('due_date')}}" placeholder="Ingrese la fecha de inicio" autofocus autocomplete="due_date" required></x-jet-input>
-                <x-input-error for="due_date" />
-            </div>
+
         </div>
 
 
