@@ -167,11 +167,12 @@
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${data[cont].id}</td>
                         <td class="px-6 py-4">${data[cont].details}</td>
                         <td class="px-6 py-4">${data[cont].transaction_date}</td>
-                        <td class="px-6 py-4"><strong>${data[cont].grand}</strong></td>
+                        <td class="px-6 py-4 text-right"><strong>${new Intl.NumberFormat().format(data[cont].grand)}</strong></td>
+
                         <td class="px-6 py-4">${msg}</td>
                         <td class="px-6 py-4 ">
                         <div class="d-flex justify-center items-center flex-row">
-                        <button class="text-danger" type="button" onclick="eliminar('${data[cont].id}');">Eliminar</button>
+                        <button class="text-danger" type="button" onclick="eliminar('${data[cont]}');">Eliminar</button>
                         </div>
                         </td>
                         `
